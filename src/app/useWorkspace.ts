@@ -2,6 +2,8 @@ import { reactive, ref, provide, watch } from "vue";
 import { createDocument } from "../shared/defaults";
 import { studioKey } from "../shared/context";
 import { generate } from "../features/mapping";
+import { useVersions, provideVersions } from "../features/versions";
+
 export function useWorkspace() {
   const doc = reactive(createDocument());
   const busy = ref(false),
@@ -23,5 +25,10 @@ export function useWorkspace() {
   }
   watch(() => doc.settings.background, invalidate);
   provide(studioKey, { doc, busy, notice, invalidate });
-  return { doc, busy, notice };
+
+  // 版本中心：冻结快照与配准缓存按版本 ID 独立管理，与当前作品解耦
+  const versions = useVersions(doc, notice);
+  provideVersions(versions);
+
+  return { doc, busy, notice, invalidate, versions };
 }

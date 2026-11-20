@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { useStudio } from "../../../shared/useStudio";
+import type { Rotation } from "../../../shared/document";
 import { cropFromPoints, normalizeCrop } from "../lib/geometry";
 export function useCrop() {
   const { doc, invalidate } = useStudio();
@@ -33,5 +34,11 @@ export function useCrop() {
     doc.crop = { x: 0, y: 0, width: 1, height: 1 };
     invalidate();
   }
-  return { doc, draft, start, down, move, up, reset };
+  function rotate(rotation: Rotation) {
+    start.value = null;
+    doc.rotation = rotation;
+    doc.crop = { x: 0, y: 0, width: 1, height: 1 };
+    invalidate();
+  }
+  return { doc, draft, start, down, move, up, reset, rotate };
 }

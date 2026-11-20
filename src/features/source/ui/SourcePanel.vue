@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-import { ImagePlus, Mountain } from "lucide-vue-next";
+import { ImagePlus, Mountain, Unlink } from "lucide-vue-next";
 import { useSource } from "../model/useSource";
+import { useVersionsContext } from "../../versions/store/versionsContext";
 const s = useSource();
+const versions = useVersionsContext();
 onMounted(() => s.demo());
 function change(e: Event) {
   s.file((e.target as HTMLInputElement).files?.[0]);
@@ -33,5 +35,13 @@ function change(e: Event) {
       <span>{{ s.doc.asset.name }}</span
       ><small>{{ s.doc.asset.width }} × {{ s.doc.asset.height }} px</small>
     </div>
+    <button
+      v-if="s.doc.asset"
+      class="detach-btn"
+      title="删除当前原图资源，验证冻结版本仍可查看与恢复"
+      @click="versions.detachSource()"
+    >
+      <Unlink :size="12" /> 释放当前原图资源
+    </button>
   </section>
 </template>

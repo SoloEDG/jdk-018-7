@@ -6,13 +6,17 @@ import { tone, luminance } from "../lib/tone";
 export function generate(doc: StudioDocument): Grid | null {
   if (!doc.asset) return null;
   const s = doc.settings;
+  const rotated = doc.rotation === 90 || doc.rotation === 270;
+  const baseWidth = rotated ? doc.asset.height : doc.asset.width;
+  const baseHeight = rotated ? doc.asset.width : doc.asset.height;
   const size = gridSize(
-    doc.asset.width * doc.crop.width,
-    doc.asset.height * doc.crop.height,
+    baseWidth * doc.crop.width,
+    baseHeight * doc.crop.height,
     s.columns,
   );
   const pixels = sample(
     doc.asset,
+    doc.rotation,
     doc.crop,
     size.columns,
     size.rows,

@@ -1,6 +1,9 @@
-import type { Asset, Crop } from "../../../shared/document";
+import type { Asset, Crop, Rotation } from "../../../shared/document";
+import { rotatedCanvas } from "../../crop/lib/rotate";
+
 export function sample(
   asset: Asset,
+  rotation: Rotation,
   crop: Crop,
   columns: number,
   rows: number,
@@ -12,12 +15,13 @@ export function sample(
   const g = c.getContext("2d", { willReadFrequently: true })!;
   g.fillStyle = background;
   g.fillRect(0, 0, columns, rows);
+  const src = rotatedCanvas(asset, rotation);
   g.drawImage(
-    asset.image,
-    crop.x * asset.width,
-    crop.y * asset.height,
-    crop.width * asset.width,
-    crop.height * asset.height,
+    src.canvas,
+    crop.x * src.width,
+    crop.y * src.height,
+    crop.width * src.width,
+    crop.height * src.height,
     0,
     0,
     columns,

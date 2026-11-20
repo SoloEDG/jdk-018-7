@@ -4,6 +4,10 @@ export interface Crop {
   width: number;
   height: number;
 }
+
+/** 顺时针旋转角度，作用于原图之后、裁剪之前 */
+export type Rotation = 0 | 90 | 180 | 270;
+
 export interface Asset {
   name: string;
   url: string;
@@ -33,6 +37,7 @@ export interface Grid {
 }
 export interface StudioDocument {
   asset: Asset | null;
+  rotation: Rotation;
   crop: Crop;
   settings: Settings;
   grid: Grid | null;

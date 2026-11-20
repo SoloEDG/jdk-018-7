@@ -2,6 +2,7 @@ import type { StudioDocument } from "./document";
 export function createDocument(): StudioDocument {
   return {
     asset: null,
+    rotation: 0,
     crop: { x: 0, y: 0, width: 1, height: 1 },
     settings: {
       columns: 100,
